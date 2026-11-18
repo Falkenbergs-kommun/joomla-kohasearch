@@ -1,0 +1,794 @@
+/* ═══════════════════════════════════════════════════════════
+   FBG Koha Search – Bibliotekskatalog discovery
+   UIkit 3-kompatibel, container queries, dark mode
+   ═══════════════════════════════════════════════════════════ */
+
+.mod-fbg-kohasearch {
+    container-type: inline-size;
+}
+
+/* ── Rubrik ─────────────────────────────────────────── */
+
+.fbg-ks-heading {
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+}
+
+/* ── Sökfält ────────────────────────────────────────── */
+
+.fbg-ks-search-row {
+    display: flex;
+    gap: 0;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.fbg-ks-search-row input {
+    min-height: 48px;
+    border-radius: 8px 0 0 8px;
+    border-right: none;
+    font-size: 1.05rem;
+}
+
+.fbg-ks-search-row input:focus {
+    outline: 2px solid #1e87f0;
+    outline-offset: -2px;
+    border-color: #1e87f0;
+}
+
+.fbg-ks-search-row button {
+    min-height: 48px;
+    min-width: 48px;
+    border-radius: 0 8px 8px 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 20px;
+    white-space: nowrap;
+}
+
+/* ── Aktiva filter-chips ────────────────────────────── */
+
+.fbg-ks-active-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+    justify-content: center;
+}
+
+.fbg-ks-filter-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    background: #e8f0fe;
+    color: #1a73e8;
+    border-radius: 16px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: background 0.15s;
+}
+
+.fbg-ks-filter-chip:hover {
+    background: #d2e3fc;
+}
+
+.fbg-ks-filter-chip .chip-remove {
+    font-size: 1rem;
+    line-height: 1;
+    margin-left: 2px;
+}
+
+/* ── Sektionstitlar ─────────────────────────────────── */
+
+.fbg-ks-section-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 2px solid #1e87f0;
+    display: inline-block;
+}
+
+/* ── Browse-slider ──────────────────────────────────── */
+
+.fbg-ks-browse-slider .uk-slider-items > div {
+    padding: 0 8px;
+}
+
+/* ── Bokkort ────────────────────────────────────────── */
+
+.fbg-ks-results-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.fbg-ks-book-card {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    transition: box-shadow 0.2s, transform 0.2s;
+    height: 100%;
+}
+
+.fbg-ks-book-card {
+    cursor: pointer;
+}
+
+.fbg-ks-book-card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.14);
+    transform: translateY(-2px);
+}
+
+.fbg-ks-cover {
+    height: 280px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f0f0f0;
+    flex-shrink: 0;
+    position: relative;
+}
+
+.fbg-ks-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.3s;
+}
+
+.fbg-ks-book-card:hover .fbg-ks-cover img {
+    transform: scale(1.04);
+}
+
+.fbg-ks-cover-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    color: #767676;
+    gap: 8px;
+    padding: 20px;
+    text-align: center;
+}
+
+.fbg-ks-cover-placeholder .placeholder-title {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #595959;
+    line-height: 1.3;
+}
+
+.fbg-ks-book-info {
+    padding: 12px 14px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.fbg-ks-book-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.3;
+    margin: 0 0 4px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.fbg-ks-subtitle {
+    font-weight: 400;
+    color: #666;
+}
+
+.fbg-ks-book-author {
+    font-size: 0.83rem;
+    color: #666;
+    margin: 0 0 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.fbg-ks-book-meta {
+    margin-top: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    align-items: center;
+}
+
+.fbg-ks-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.72rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.fbg-ks-badge-media {
+    background: #e8f0fe;
+    color: #1a73e8;
+}
+
+.fbg-ks-badge-year {
+    background: #f1f3f4;
+    color: #5f6368;
+}
+
+.fbg-ks-badge-lang {
+    background: #fef0e6;
+    color: #c0581d;
+}
+
+.fbg-ks-availability {
+    font-size: 0.78rem;
+    margin-top: 4px;
+}
+
+.fbg-ks-avail-yes {
+    color: #0d7a3e;
+}
+
+.fbg-ks-avail-no {
+    color: #c5221f;
+}
+
+/* Under inköp (beställd i Koha) – varken inne eller ej tillgänglig.
+   #1a5fb4 mot vitt ger 6,3:1 (WCAG AA). */
+.fbg-ks-avail-order {
+    color: #1a5fb4;
+}
+
+/* ── Mobil filterknapp ──────────────────────────────── */
+
+.fbg-ks-filter-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    margin-bottom: 12px;
+}
+
+.fbg-ks-filter-toggle:hover {
+    background: #e8f0fe;
+    border-color: #1e87f0;
+    color: #1e87f0;
+}
+
+.fbg-ks-filter-toggle[aria-expanded="true"] {
+    background: #e8f0fe;
+    border-color: #1e87f0;
+    color: #1e87f0;
+}
+
+.fbg-ks-filter-count-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    background: #1e87f0;
+    color: #fff;
+    border-radius: 10px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    line-height: 1;
+}
+
+/* Dölj facetter på mobil tills toggle öppnar dem */
+@media (max-width: 959px) {
+    .fbg-ks-facets-collapsible {
+        display: none;
+    }
+
+    .fbg-ks-facets-collapsible.fbg-ks-facets-open {
+        display: block;
+    }
+}
+
+/* ── Facetter ───────────────────────────────────────── */
+
+.fbg-ks-facets {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 16px;
+    position: sticky;
+    top: 20px;
+}
+
+.fbg-ks-facet-group {
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.fbg-ks-facet-group:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.fbg-ks-facet-title {
+    font-size: 0.88rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+}
+
+.fbg-ks-facet-title::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid #666;
+    border-bottom: 2px solid #666;
+    transform: rotate(45deg);
+    transition: transform 0.2s;
+    flex-shrink: 0;
+}
+
+.fbg-ks-facet-title.collapsed::after {
+    transform: rotate(-45deg);
+}
+
+.fbg-ks-facet-options {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.fbg-ks-facet-options.collapsed {
+    display: none;
+}
+
+.fbg-ks-facet-option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.83rem;
+    cursor: pointer;
+    padding: 3px 0;
+}
+
+.fbg-ks-facet-option input[type="checkbox"] {
+    margin: 0;
+    accent-color: #1e87f0;
+}
+
+.fbg-ks-facet-count {
+    color: #595959;
+    font-size: 0.75rem;
+    margin-left: auto;
+}
+
+/* År-filter med inputs */
+.fbg-ks-year-inputs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.fbg-ks-year-inputs input {
+    width: 80px;
+    padding: 4px 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.83rem;
+    text-align: center;
+}
+
+.fbg-ks-year-inputs span {
+    color: #595959;
+    font-size: 0.83rem;
+}
+
+/* ── Sortering ──────────────────────────────────────── */
+
+.fbg-ks-sort-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.fbg-ks-sort-label {
+    font-size: 0.82rem;
+    color: #666;
+    white-space: nowrap;
+}
+
+.fbg-ks-sort-select {
+    font-size: 0.82rem;
+    padding: 4px 24px 4px 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23666'/%3E%3C/svg%3E") no-repeat right 8px center;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    color: #333;
+    line-height: 1.4;
+    min-height: 30px;
+}
+
+.fbg-ks-sort-select:focus {
+    outline: 2px solid #1e87f0;
+    outline-offset: -1px;
+    border-color: #1e87f0;
+}
+
+/* ── Paginering ─────────────────────────────────────── */
+
+.fbg-ks-pagination {
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.fbg-ks-page-btn {
+    min-width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: #fff;
+    color: #333;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-decoration: none;
+    padding: 0 10px;
+}
+
+.fbg-ks-page-btn:hover {
+    background: #f0f0f0;
+    border-color: #1e87f0;
+    color: #1e87f0;
+}
+
+.fbg-ks-page-btn.active {
+    background: #1e87f0;
+    border-color: #1e87f0;
+    color: #fff;
+}
+
+.fbg-ks-page-btn:disabled {
+    opacity: 0.4;
+    cursor: default;
+}
+
+/* ── Bokmodal ───────────────────────────────────────── */
+
+.fbg-ks-modal-dialog {
+    max-width: 700px;
+    border-radius: 12px;
+    padding: 30px;
+}
+
+.fbg-ks-modal-top {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 20px;
+}
+
+.fbg-ks-modal-cover {
+    flex-shrink: 0;
+    width: 180px;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+}
+
+.fbg-ks-modal-cover img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.fbg-ks-modal-info {
+    flex-grow: 1;
+    min-width: 0;
+}
+
+.fbg-ks-modal-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin: 0 0 6px;
+}
+
+.fbg-ks-modal-author {
+    font-size: 1rem;
+    color: #444;
+    margin: 0 0 10px;
+}
+
+.fbg-ks-author-link {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-underline-offset: 3px;
+    cursor: pointer;
+    transition: color 0.15s;
+}
+
+.fbg-ks-author-link:hover,
+.fbg-ks-author-link:focus {
+    color: #1e87f0;
+    text-decoration-style: solid;
+}
+
+.fbg-ks-series-link {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-underline-offset: 2px;
+    cursor: pointer;
+    transition: color 0.15s;
+}
+
+.fbg-ks-series-link:hover,
+.fbg-ks-series-link:focus {
+    color: #1e87f0;
+    text-decoration-style: solid;
+}
+
+.fbg-ks-modal-meta {
+    font-size: 0.85rem;
+    color: #595959;
+    margin: 0;
+    line-height: 1.6;
+}
+
+.fbg-ks-modal-availability {
+    margin-top: 10px;
+    font-size: 0.85rem;
+    line-height: 1.6;
+}
+
+.fbg-ks-modal-availability ul {
+    list-style: none;
+    margin: 2px 0 0;
+    padding: 0;
+}
+
+.fbg-ks-modal-availability li {
+    margin: 0;
+}
+
+/* Placering + hyllsignum i "Finns inne"-listan – dämpad så filial och antal
+   fortsätter dominera raden. #595959 mot vitt ger 7:1 (WCAG AAA). */
+.fbg-ks-shelf {
+    color: #595959;
+}
+
+.fbg-ks-modal-avail-note {
+    display: block;
+    font-size: 0.75rem;
+    color: #595959;
+    margin-top: 2px;
+}
+
+/* Live-status hämtad från Koha just nu – temats primärgrön (#003322, 14:1 mot vitt)
+   med en punkt framför så skillnaden mot dygnssynk-notisen syns utan färgseende */
+.fbg-ks-modal-avail-note.is-live {
+    color: #003322;
+    font-weight: 600;
+}
+
+.fbg-ks-modal-avail-note.is-live::before {
+    content: "\25CF\00a0";
+}
+
+.fbg-ks-modal-abstract {
+    margin-bottom: 16px;
+    line-height: 1.6;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.fbg-ks-modal-tags {
+    margin-bottom: 12px;
+    line-height: 1.8;
+}
+
+.fbg-ks-modal-tags strong {
+    font-size: 0.85rem;
+    margin-right: 4px;
+}
+
+.fbg-ks-tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 14px;
+    font-size: 0.78rem;
+    margin: 2px 3px;
+}
+
+.fbg-ks-tag-subject {
+    background: #e8f0fe;
+    color: #1a73e8;
+}
+
+.fbg-ks-tag-tag {
+    background: #f1f3f4;
+    color: #5f6368;
+}
+
+.fbg-ks-tag-clickable {
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.fbg-ks-tag-clickable:hover,
+.fbg-ks-tag-clickable:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+    outline: none;
+}
+
+.fbg-ks-tag-subject.fbg-ks-tag-clickable:hover,
+.fbg-ks-tag-subject.fbg-ks-tag-clickable:focus {
+    background: #d2e3fc;
+}
+
+.fbg-ks-tag-tag.fbg-ks-tag-clickable:hover,
+.fbg-ks-tag-tag.fbg-ks-tag-clickable:focus {
+    background: #e2e5e8;
+}
+
+.fbg-ks-modal-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #e8e8e8;
+}
+
+@media (max-width: 600px) {
+    .fbg-ks-modal-top {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .fbg-ks-modal-cover {
+        width: 140px;
+    }
+
+    .fbg-ks-modal-actions {
+        flex-direction: column;
+    }
+
+    .fbg-ks-modal-actions .uk-button {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* ── Shake-animation ────────────────────────────────── */
+
+@keyframes fbg-ks-shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+}
+
+.fbg-ks-shake {
+    animation: fbg-ks-shake 0.3s ease-in-out;
+}
+
+/* ── Responsiv ──────────────────────────────────────── */
+
+@container (max-width: 900px) {
+    .fbg-ks-results-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+    }
+}
+
+@container (max-width: 640px) {
+    .fbg-ks-results-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .fbg-ks-cover {
+        height: 220px;
+    }
+
+    .fbg-ks-btn-text {
+        display: none;
+    }
+
+    .fbg-ks-search-row button {
+        padding: 0 14px;
+    }
+
+    #fbg-ks-result-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .fbg-ks-sort-wrapper {
+        width: 100%;
+    }
+
+    .fbg-ks-sort-select {
+        flex: 1;
+    }
+}
+
+@container (max-width: 400px) {
+    .fbg-ks-results-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .fbg-ks-cover {
+        height: 180px;
+    }
+
+    .fbg-ks-book-info {
+        padding: 8px 10px;
+    }
+
+    .fbg-ks-book-title {
+        font-size: 0.85rem;
+    }
+}
+
+/* ── Print ──────────────────────────────────────────── */
+
+@media print {
+    .fbg-ks-search-wrapper,
+    .fbg-ks-facets,
+    .fbg-ks-pagination,
+    .fbg-ks-sort-wrapper,
+    #fbg-ks-back-browse,
+    #fbg-ks-clear-filters {
+        display: none !important;
+    }
+
+    .fbg-ks-book-card {
+        break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+}

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="3.8" client="site" method="upgrade">
+	<name>FBG Koha Search</name>
+	<creationDate>2026-03-25</creationDate>
+	<author>Falkenbergs kommun</author>
+	<authorEmail>utveckling@falkenberg.se</authorEmail>
+	<authorUrl>falkenberg.se</authorUrl>
+	<copyright>2026</copyright>
+	<license>NA</license>
+	<version>1.1.0</version>
+	<description>Sök- och discovery-sida för Falkenbergs bibliotekskatalog. Semantisk sökning via Qdrant vektordatabas med ~68 000 titlar, facettfiltrering och bokomslagsbilder.</description>
+
+	<files>
+		<filename module="mod_fbg_kohasearch">mod_fbg_kohasearch.php</filename>
+		<filename>helper.php</filename>
+		<filename>search.php</filename>
+		<folder>tmpl</folder>
+		<folder>assets</folder>
+		<filename>mod_fbg_kohasearch.xml</filename>
+	</files>
+
+	<config>
+		<fields name="params">
+			<fieldset name="basic" label="Grundinställningar">
+				<field
+					name="heading"
+					type="text"
+					label="Rubrik"
+					description="Rubrik som visas ovanför sökfältet (lämna tomt för ingen rubrik)"
+					default="Sök i biblioteket"
+				/>
+				<field
+					name="placeholder"
+					type="text"
+					label="Placeholder-text i sökfältet"
+					default="Sök bland 68 000 titlar..."
+				/>
+				<field
+					name="results_per_page"
+					type="text"
+					label="Antal resultat per sida"
+					description="Antal bokkort som visas per sida"
+					default="24"
+					filter="integer"
+				/>
+				<field
+					name="image_base_url"
+					type="text"
+					label="Bas-URL för bokomslagsbilder"
+					description="URL-prefix för cachade bokomslagsbilder"
+					default="https://bibliotek.falkenberg.se/fbg_apps/services/koha/images/"
+					size="80"
+				/>
+				<field
+					name="show_facets"
+					type="radio"
+					label="Visa facettfilter"
+					description="Visa sidopanel med filtreringsmöjligheter"
+					default="1"
+					layout="joomla.form.field.radio.switcher"
+				>
+					<option value="1">Ja</option>
+					<option value="0">Nej</option>
+				</field>
+				<field
+					name="show_availability"
+					type="radio"
+					label="Visa tillgänglighet"
+					description="Visa antal tillgängliga exemplar på bokkorten"
+					default="1"
+					layout="joomla.form.field.radio.switcher"
+				>
+					<option value="1">Ja</option>
+					<option value="0">Nej</option>
+				</field>
+			</fieldset>
+
+			<fieldset name="searchbox" label="Sökbox-läge">
+				<field
+					name="serp_url"
+					type="text"
+					label="Sökresultatsida (URL)"
+					description="Sida som sökboxen skickar vidare till med ?q=sökterm. Ange en ren sökväg utan query-string (t.ex. /sok) – gäller endast layouten Searchbox"
+					default="/vektor"
+				/>
+				<field
+					name="suggest_limit"
+					type="text"
+					label="Antal autocomplete-förslag"
+					description="Max antal förslag som visas i sökboxens dropdown"
+					default="8"
+					filter="integer"
+				/>
+			</fieldset>
+
+			<fieldset name="api" label="API-inställningar">
+				<field
+					name="qdrant_url"
+					type="text"
+					label="Qdrant-server URL"
+					description="URL till Qdrant-instansen"
+					default="https://qdrant.utvecklingfalkenberg.se"
+				/>
+				<field
+					name="qdrant_api_key"
+					type="text"
+					label="Qdrant API-nyckel"
+					description="API-nyckel för autentisering mot Qdrant"
+					filter="raw"
+					size="80"
+					default=""
+				/>
+				<field
+					name="openai_api_key"
+					type="text"
+					label="OpenAI API-nyckel"
+					description="API-nyckel för OpenAI (embeddings)"
+					filter="raw"
+					size="80"
+					default=""
+				/>
+				<field
+					name="embedding_model"
+					type="text"
+					label="Embedding-modell"
+					description="OpenAI-modell för att generera vektorembeddings"
+					default="text-embedding-3-large"
+				/>
+				<field
+					name="directus_url"
+					type="text"
+					label="Directus URL"
+					description="URL till Directus-instansen (för facetter och browse-läge)"
+					default="https://nav.utvecklingfalkenberg.se"
+				/>
+				<field
+					name="directus_token"
+					type="text"
+					label="Directus API-token"
+					description="API-token för Directus"
+					filter="raw"
+					size="80"
+					default=""
+				/>
+			</fieldset>
+
+			<fieldset name="advanced">
+				<field
+					name="layout"
+					type="modulelayout"
+					label="JFIELD_ALT_LAYOUT_LABEL"
+					class="form-select"
+					validate="moduleLayout"
+				/>
+				<field
+					name="moduleclass_sfx"
+					type="text"
+					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC"
+				/>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

@@ -1,0 +1,2 @@
+# Cachefiler ska inte kunna läsas via webben (facetter, förslagsindex, låsfiler)
+Require all denied

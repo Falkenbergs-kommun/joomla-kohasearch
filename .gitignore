@@ -1,0 +1,5 @@
+mod_fbg_kohasearch/cache/*.json
+mod_fbg_kohasearch/cache/*.tsv
+mod_fbg_kohasearch/cache/*.lock
+.claude/
+cache-live/

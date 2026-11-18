@@ -1,0 +1,131 @@
+/**
+ * FBG Koha Search – Sökbox med autocomplete (layout: searchbox)
+ * Egen namnrymd fbg-ksb-* – laddas i stället för kohasearch.css på sidor
+ * som bara har den kompakta sökboxen.
+ */
+
+.mod-fbg-kohasearch-box {
+	max-width: 700px;
+	margin: 0 auto;
+}
+
+.fbg-ksb-heading {
+	margin-bottom: 15px;
+}
+
+.fbg-ksb-search-row {
+	display: flex;
+	gap: 0;
+}
+
+/* Tre klasser i selektorn krävs för att vinna över temats sektionsregler
+   (t.ex. .uk-section-secondary:not(.uk-preserve-color) .uk-input som ger
+   halvtransparent bakgrund + vit text i färgade sektioner – vitt på brunt
+   ger bara ~3:1). Modulens CSS laddas efter temat, så lika specificitet vinner. */
+.mod-fbg-kohasearch-box .fbg-ksb-search-row .uk-input {
+	min-height: 48px;
+	border-radius: 8px 0 0 8px;
+	border-right: none;
+	background-color: #fff;
+	color: #202020;
+}
+
+.mod-fbg-kohasearch-box .fbg-ksb-search-row .uk-input::placeholder {
+	color: #666; /* Temats #999 ger bara 2,85:1 mot vitt – #666 ger 5,7:1 */
+}
+
+/* Temat släcker outline på uk-input:focus (bara svagt bakgrundsbyte) –
+   ge sökboxen en tydlig fokusmarkering (WCAG 2.4.7) */
+.mod-fbg-kohasearch-box .fbg-ksb-search-row .uk-input:focus {
+	background-color: #fff;
+	color: #202020;
+	outline: 3px solid #003322;
+	outline-offset: -3px;
+}
+
+.fbg-ksb-search-row .uk-button:focus-visible {
+	outline: 3px solid #202020;
+	outline-offset: 2px;
+}
+
+.fbg-ksb-search-row .uk-button {
+	min-height: 48px;
+	border-radius: 0 8px 8px 0;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	white-space: nowrap;
+}
+
+/* ── Förslagsdropdown ───────────────────────────────────────────── */
+
+.fbg-ksb-combo {
+	position: relative;
+}
+
+.fbg-ksb-suggestions {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	right: 0;
+	z-index: 1010;
+	margin: 4px 0 0;
+	padding: 4px 0;
+	list-style: none;
+	background: #fff;
+	color: #333; /* Explicit – sidan kan ha ljus textfärg (t.ex. hero-sektion) */
+	border: 1px solid #e5e5e5;
+	border-radius: 8px;
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+	max-height: 360px;
+	overflow-y: auto;
+}
+
+.fbg-ksb-suggestions[hidden] {
+	display: none;
+}
+
+.fbg-ksb-suggestions li[role="option"] {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	padding: 8px 14px;
+	cursor: pointer;
+}
+
+.fbg-ksb-suggestions li[role="option"]:hover {
+	background: #e8f1ed;
+	color: #1a1a1a;
+}
+
+/* Tangentbordsmarkerad rad – hög kontrast (temats primärgrön, 14:1 mot vitt)
+   eftersom detta är enda fokusindikationen vid pilnavigering */
+.fbg-ksb-suggestions li.fbg-ksb-active {
+	background: #003322;
+	color: #fff;
+}
+
+.fbg-ksb-suggestions li.fbg-ksb-active .fbg-ksb-opt-type {
+	color: #cfe0d8;
+}
+
+.fbg-ksb-opt-label {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.fbg-ksb-opt-type {
+	flex-shrink: 0;
+	font-size: 0.75rem;
+	color: #595959; /* 7:1 mot vitt – #888 klarade inte AA (3,5:1) */
+}
+
+/* ── Smala skärmar ──────────────────────────────────────────────── */
+
+@media (max-width: 640px) {
+	.fbg-ksb-btn-text {
+		display: none;
+	}
+}
