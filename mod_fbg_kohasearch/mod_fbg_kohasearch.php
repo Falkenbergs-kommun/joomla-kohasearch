@@ -53,7 +53,7 @@ if ($layoutName === 'searchbox') {
 ");
 } else {
 	// Fullständig sök- och discovery-modul
-	$document->addScript('/modules/mod_fbg_kohasearch/assets/js/kohasearch.js?v=23');
+	$document->addScript('/modules/mod_fbg_kohasearch/assets/js/kohasearch.js?v=24');
 	$document->addStyleSheet('/modules/mod_fbg_kohasearch/assets/css/kohasearch.css?v=13');
 
 	// Live-status i modalen (mode=availability) kräver Koha-uppgifter i

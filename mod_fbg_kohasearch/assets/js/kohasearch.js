@@ -183,6 +183,8 @@
         initRefs();
         if (!els.input) return;
 
+        document.addEventListener('error', handleCoverError, true);
+
         // Events
         els.input.addEventListener('keydown', function (e) {
             if (e.key === 'Enter') {
@@ -890,7 +892,7 @@
         var coverHtml;
         var primaryMedia = mediaTypes[0] || '';
         if (imageUrl) {
-            coverHtml = '<div class="fbg-ks-cover"><img src="' + escapeHtml(imageUrl) + '" alt="' + escapeHtml(title) + '" loading="lazy" onerror="this.parentElement.innerHTML=\'' + placeholderHtmlAttr(title, primaryMedia) + '\'"></div>';
+            coverHtml = '<div class="fbg-ks-cover"><img src="' + escapeHtml(imageUrl) + '" alt="' + escapeHtml(title) + '" loading="lazy" data-fbg-ks-cover data-media="' + escapeHtml(primaryMedia) + '"></div>';
         } else {
             coverHtml = '<div class="fbg-ks-cover">' + placeholderHtml(title, primaryMedia) + '</div>';
         }
@@ -964,9 +966,16 @@
             '<span class="placeholder-title">' + escapeHtml(title) + '</span></div>';
     }
 
-    function placeholderHtmlAttr(title, mediaType) {
-        // Escaped för användning i onerror-attribut (inuti "...'...'...")
-        return placeholderHtml(title, mediaType).replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    /**
+     * Omslag som inte går att ladda byts mot placeholder. error-händelser bubblar
+     * inte, därför en capture-lyssnare på dokumentet i stället för inline onerror –
+     * titeln ska aldrig hamna i en JS-sträng i ett attribut (apostrofer i titeln
+     * bröt strängen efter att HTML-tolken avkodat entiteterna).
+     */
+    function handleCoverError(e) {
+        var img = e.target;
+        if (!img || img.tagName !== 'IMG' || !img.hasAttribute('data-fbg-ks-cover') || !img.parentElement) return;
+        img.parentElement.innerHTML = placeholderHtml(img.getAttribute('alt'), img.getAttribute('data-media'));
     }
 
     function renderResultCount() {

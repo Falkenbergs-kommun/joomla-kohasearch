@@ -16,6 +16,10 @@
  * @package FBG Koha Search
  */
 
+// Tak för paginering: offset styr hur många träffar som hämtas från Qdrant
+// (mode=search hämtar limit + offset), så ett fritt värde vore en lastattack.
+const MAX_RESULT_OFFSET = 1000;
+
 // Dolda filialer och låntyper – visas varken i filter eller sökresultat.
 // Titlar som enbart finns på dolda filialer/med dolda typer exkluderas helt.
 const HIDDEN_BRANCHES = ['GYMNASIET', 'FJARRLAN', 'LASFRAMJAN', 'SKOGSTORP', 'MUSEET'];
@@ -183,7 +187,7 @@ function handleSearch(array $input, string $qdrantUrl, string $qdrantKey, string
 {
     $query   = trim($input['query'] ?? '');
     $limit   = min(max(1, (int)($input['limit'] ?? 24)), 100);
-    $offset  = max(0, (int)($input['offset'] ?? 0));
+    $offset  = min(max(0, (int)($input['offset'] ?? 0)), MAX_RESULT_OFFSET);
     $filters = $input['filters'] ?? [];
     $sort    = $input['sort'] ?? 'relevance_desc';
 
@@ -322,7 +326,7 @@ function handleRecommend(array $input, string $qdrantUrl, string $qdrantKey, str
 {
     $biblioId = (int)($input['biblio_id'] ?? 0);
     $limit    = min(max(1, (int)($input['limit'] ?? 24)), 100);
-    $offset   = max(0, (int)($input['offset'] ?? 0));
+    $offset   = min(max(0, (int)($input['offset'] ?? 0)), MAX_RESULT_OFFSET);
     $filters  = $input['filters'] ?? [];
     $sort     = $input['sort'] ?? 'relevance_desc';
 
@@ -403,7 +407,7 @@ function handleAuthorSearch(array $input, string $qdrantUrl, string $qdrantKey, 
 {
     $author  = trim($input['author'] ?? '');
     $limit   = min(max(1, (int)($input['limit'] ?? 24)), 100);
-    $offset  = max(0, (int)($input['offset'] ?? 0));
+    $offset  = min(max(0, (int)($input['offset'] ?? 0)), MAX_RESULT_OFFSET);
     $filters = $input['filters'] ?? [];
     $sort    = $input['sort'] ?? 'year_desc';
 
@@ -1802,7 +1806,7 @@ function handleSeriesSearch(array $input, string $qdrantUrl, string $qdrantKey, 
 {
     $series  = trim($input['series'] ?? '');
     $limit   = min(max(1, (int)($input['limit'] ?? 24)), 100);
-    $offset  = max(0, (int)($input['offset'] ?? 0));
+    $offset  = min(max(0, (int)($input['offset'] ?? 0)), MAX_RESULT_OFFSET);
     $filters = $input['filters'] ?? [];
     $sort    = $input['sort'] ?? 'year_desc';
 

@@ -261,7 +261,7 @@ On-demand bildproxy: `cover.php?isbn=X` serverar cachade bilder (37ms) eller lad
 - Cachad bild serveras med `Cache-Control: public, max-age=604800` (7 dagar)
 - 404 cachas i webbläsaren 1 dag (undviker upprepad nedladdning)
 - Nedladdningar från Syndetics är kvoterade: `COVER_DOWNLOADS_PER_MIN` (60/min globalt, glidande fönster i `cache-live/cover_ratelimit.json`, fail closed). Över kvoten svarar `cover.php` 503 med `no-store` – JS visar placeholder och bilden hämtas vid nästa sidvisning. Cachade bilder räknas inte
-- JS har `onerror`-fallback som visar mediatypanpassad SVG-placeholder om bild saknas (bok, hörlurar, filmrulle, tidning, spelkontroll, karta, noter, skärm)
+- JS har error-fallback (`handleCoverError()`) som visar mediatypanpassad SVG-placeholder om bild saknas (bok, hörlurar, filmrulle, tidning, spelkontroll, karta, noter, skärm)
 - Alla `image_url` i JSON-svar pekar på `/modules/mod_fbg_kohasearch/cover.php?isbn=X`
 
 ### JavaScript (kohasearch.js)
@@ -323,7 +323,8 @@ CSS/JS-assets laddas med `?v=N` i `mod_fbg_kohasearch.php` – öka N vid ändri
 - **Alla `const` i `search.php` ska stå i blocket överst (före dispatchen, ~rad 20–60).** Funktioner hissas upp men toppnivå-`const` gör det inte: en konstant längre ned är odefinierad när `switch ($mode)` anropar funktionen. Det ger HTTP 500 i `mode=book`/`availability`. `php -l` fångar det inte, så röktesta efter driftsättning med `mode=book` och `mode=availability` (t.ex. biblio 76221, under inköp) och läs webbserverns fellogg.
 - Qdrant filter: `should` inom `must` för OR-logik per facett
 - `escapeHtml()` escapar alla fem farliga tecken (`<`, `>`, `&`, `"`, `'`) – säkert för både textinnehåll och attributvärden
-- `placeholderHtml(title, mediaType)` returnerar ren HTML; `placeholderHtmlAttr()` gör extra `"`/`'`-escape för `onerror`-attribut
+- `placeholderHtml(title, mediaType)` returnerar ren HTML. Omslag som inte laddas byts mot placeholder av `handleCoverError()` (capture-lyssnare på dokumentet, bilden märks med `data-fbg-ks-cover` + `data-media`) – bygg aldrig inline-`onerror` av data
+- `offset` kläms till `MAX_RESULT_OFFSET` (1000) i search/recommend/author/series – i `mode=search` styr det hur mycket som hämtas från Qdrant
 
 ## Related Projects
 
